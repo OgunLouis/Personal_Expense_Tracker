@@ -9,29 +9,21 @@ now = datetime.now()
 date_str = now.strftime("%d/%m/%y")
 
 # Connect to the database (creates the file if it doesn’t exist)
-conn = sqlite3.connect('PET.db')
+conn = sqlite3.connect('PersonalExpense.db')
 cursor = conn.cursor()
 
-# Create the expenses table if it doesn’t already exist
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS income (
-    id INTEGER PRIMARY KEY,
-    Income INT,
-    Description TEXT,
-    Date DATE
-)
-''')
 now = datetime.now()
 date_str = now.strftime("%d/%m/%y")
 
-def add_income():
+def add_income(user_name):
     income_amount = int(input("How much did you earn: \n"))
     description = str(input("Income source?: \n"))
     a_date = date_str
+    income_table = f"{user_name}_income"
     
     # Insert expense data into the database
-    cursor.execute('''
-    INSERT INTO income (Date, Income, Description)
+    cursor.execute(f'''
+    INSERT INTO {income_table} (Date, Income, Description)
     VALUES (?, ?, ?)
     ''', (date_str, income_amount, description))
     
@@ -45,7 +37,5 @@ def add_income():
     "------------------------\n")
     print("------------------------\n", data)
     conn.close()
-
-#add_income(User_name=input('Enter Username:    \n'))
 # Close the database connection when done
 #conn.close()
